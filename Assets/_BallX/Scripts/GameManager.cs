@@ -214,7 +214,7 @@ namespace AppAdvisory.BallX
 			//stepX = screenRect.width / ((numberOfColumn+2) + (numberOfColumn + 4) * distanceBetweenCellsCoeff);
 			//float startOffset = (stepX / 2) * (1 + distanceBetweenCellsCoeff);
 
-			stepX = Mathf.Min (screenRect.width, screenRect.height) / (numberOfColumn + 2);
+			stepX = Mathf.Min (screenRect.width, screenRect.height) / (numberOfColumn + 0.11f);
 			//stepX = screenRect.width / (numberOfColumn+2);
 			float startOffset = stepX / 2;
 
@@ -506,7 +506,7 @@ namespace AppAdvisory.BallX
 			leftWall.transform.position = new Vector3 (-background.localScale.x / 2 + startOffset, 0, 0);
 			rightWall.transform.position = new Vector3 (background.localScale.x / 2 - startOffset, 0, 0);
 
-			gridContainer.position = new Vector3(- background.localScale.x / 2 + startOffset, screenRect.yMax - startOffset - topBorderHeight);
+			gridContainer.position = new Vector3(- background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight);
 
 		}
 

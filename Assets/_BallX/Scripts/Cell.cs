@@ -8,8 +8,10 @@ namespace AppAdvisory.BallX
 
 		[SerializeField] private SpriteRenderer spriteRenderer;
 		[SerializeField] private TextMesh number;
+        [SerializeField] Transform destroyParticle;
 
-		private Vector3 startScale;
+
+        private Vector3 startScale;
 
 		public event OnDestroyedEventHandler OnDestroyedByBall;
 
@@ -65,6 +67,9 @@ namespace AppAdvisory.BallX
 				if (count < max) 
 				{
 					color = Color.Lerp (colors [i], colors [i + 1], (float) count/colorStep);
+                    //var particle = destroyParticle.GetComponent<ParticleSystem>().main;
+                    //particle.startColor = colors[i];
+                    
 					return color;
 				} 
 			}
@@ -114,11 +119,13 @@ namespace AppAdvisory.BallX
 			Color = GetColorFromCount (_count);
 			StartCoroutine (DOPunchScaleCoroutine (0.1f, 0.1f));
 
-			if (Count <= 0) {
+			if (Count <= 0)
+            {
 				if(OnDestroyedByBall != null)
 					OnDestroyedByBall(this);
-
-				Destroy (gameObject);
+                destroyParticle.gameObject.SetActive(true);
+                destroyParticle.parent = null;
+                Destroy (gameObject);
 			}
 		}
 	}

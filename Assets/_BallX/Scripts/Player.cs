@@ -16,7 +16,10 @@ namespace AppAdvisory.BallX
 		[SerializeField]
 		private SpriteRenderer spriteRenderer;
 
-		[SerializeField]
+        [SerializeField]
+        private Transform particle;
+
+        [SerializeField]
 		private float offsetRotation = 10f;
 
 		[SerializeField]
@@ -210,7 +213,8 @@ namespace AppAdvisory.BallX
 
 		void DisplayPlayer(bool isShown) 
 		{
-			spriteRenderer.enabled = isShown;
+            //spriteRenderer.enabled = isShown;
+            particle.gameObject.SetActive(isShown);
 		}
 
 		void SetTrajectoryPoints(Vector3 posStart, Vector2 direction)

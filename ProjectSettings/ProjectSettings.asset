@@ -141,8 +141,8 @@ PlayerSettings:
   targetPixelDensity: 0
   resolutionScalingMode: 0
   applicationIdentifier:
-    Android: com.Company.ProductName
-    Standalone: unity.DefaultCompany.BallZ
+    Android: com.belizard.spaceball
+    Standalone: com.belizard.spaceball
     Tizen: com.Company.ProductName
     iOS: com.Company.ProductName
     tvOS: com.Company.ProductName
