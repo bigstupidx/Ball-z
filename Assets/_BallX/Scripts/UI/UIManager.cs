@@ -28,7 +28,10 @@ namespace AppAdvisory.BallX
 		[SerializeField]
 		private RectTransform hud;
 
-		[SerializeField]
+        [SerializeField]
+        private RectTransform shop;
+
+        [SerializeField]
 		private Text gameOverCurrentScore;
 		[SerializeField]
 		private Text gameOverBestScore;
@@ -44,7 +47,8 @@ namespace AppAdvisory.BallX
 		public Action WatchAdButtonClicked;
 		public Action ShopButtonClicked;
 		public Action RateButtonClicked;
-		public Action ReplayButtonClicked;
+        public Action ReturnButtonClicked;
+        public Action ReplayButtonClicked;
 		public Action MainMenuButtonClicked;
 
 
@@ -52,6 +56,7 @@ namespace AppAdvisory.BallX
 			DisplayTitlecard (true);
 			DisplayGameOver (false);
 			DisplayHUD (false);
+            DisplayShop(false);
 		}
 
 		public void DisplayTitlecard(bool isShown) 
@@ -69,7 +74,12 @@ namespace AppAdvisory.BallX
 			hud.gameObject.SetActive (isShown);
 		}
 
-		public void SetGameOverBestScore (int score) {
+        public void DisplayShop(bool isShown)
+        {
+            shop.gameObject.SetActive(isShown);
+        }
+
+        public void SetGameOverBestScore (int score) {
 
 			gameOverBestScore.text = "BEST " + score.ToString ();
 		}
@@ -99,6 +109,7 @@ namespace AppAdvisory.BallX
 			DisplayTitlecard (false);
 		}
 
+
 		public void OnWatchAdButton() 
 		{
 			if (WatchAdButtonClicked != null)
@@ -109,6 +120,9 @@ namespace AppAdvisory.BallX
 		{
 			if (ShopButtonClicked != null)
 				ShopButtonClicked ();
+
+            DisplayShop(true);
+            DisplayTitlecard(false);
 		}
 
 		public void OnRateButton() 
@@ -117,7 +131,16 @@ namespace AppAdvisory.BallX
 				RateButtonClicked ();
 		}
 
-		public void OnReplayButton() 
+        public void OnReturnMenuButton()
+        {
+            if (ReturnButtonClicked != null)
+                ReturnButtonClicked();
+
+            DisplayShop(false);
+            DisplayTitlecard(true);
+        }
+
+        public void OnReplayButton() 
 		{
 			if (ReplayButtonClicked != null)
 				ReplayButtonClicked ();

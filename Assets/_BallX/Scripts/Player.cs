@@ -8,13 +8,16 @@ namespace AppAdvisory.BallX
 {
 	public class Player : MonoBehaviour {
 		[SerializeField]
-		private Ball ballPrefab;
+		private Ball[] ballPrefab;
 
 		[SerializeField]
 		private TextMesh nRemainingBalls;
 
 		[SerializeField]
 		private SpriteRenderer spriteRenderer;
+
+        [SerializeField]
+        private Transform[] particles;
 
         [SerializeField]
         private Transform particle;
@@ -27,7 +30,10 @@ namespace AppAdvisory.BallX
 		[SerializeField]
 		private GameObject dotPrefab;
 
-		private List<Transform> trajectoryDots;
+        [SerializeField]
+        private GameObject[] dotPrefabs;
+
+        private List<Transform> trajectoryDots;
 		private List<Ball> balls;
 		private int stopedBallsCount = 0;
 
@@ -81,10 +87,22 @@ namespace AppAdvisory.BallX
 			AddBall ();
 		}
 
+        public void SetPlayer()
+        {
+            foreach(Transform particle in particles)
+            {
+                particle.gameObject.SetActive(false);
+            }
+            particles[PlayerPrefs.GetInt("Ball")].gameObject.SetActive(true);
+            particle = particles[PlayerPrefs.GetInt("Ball")];
+            dotPrefab = dotPrefabs[PlayerPrefs.GetInt("Ball")];
+            SetUpTrajectoryDots();
+        }
+
 
 		public void AddBall() 
 		{
-			Ball ball = (Ball)Instantiate (ballPrefab);
+			Ball ball = (Ball)Instantiate (ballPrefab[PlayerPrefs.GetInt("Ball")]);
 			ball.transform.position = transform.position;
 			ball.transform.localScale *= BallScale;
 			ball.gameObject.SetActive (false);
@@ -158,8 +176,8 @@ namespace AppAdvisory.BallX
 			foreach (Transform dot in trajectoryDots) {
 				dot.gameObject.SetActive (false);
 			}
-				
-			if (Vector3.Angle (movement, Vector3.up) > 90 - offsetRotation)
+            Debug.Log("FIRE");
+            if (Vector3.Angle (movement, Vector3.up) > 90 - offsetRotation)
 				return;
 
 			Vector3 leftBottom = new Vector3 (ScreenRect.xMin, transform.position.y, 0);

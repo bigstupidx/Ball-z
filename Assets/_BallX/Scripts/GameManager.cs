@@ -81,9 +81,15 @@ namespace AppAdvisory.BallX
 
 		[SerializeField] private float[] brickProbabilities;
 
-		[SerializeField] private AddBall addBallPrefab;
+        [SerializeField] private ParticleSystem bottomLineParticle;
+        [SerializeField] private ParticleSystem topLineParticle;
 
-		[SerializeField] private AddCoin addCoinPrefab;
+        [SerializeField] private Color32[] lineColors;
+
+        [SerializeField] private AddBall addBallPrefab;
+        [SerializeField] private AddBall[] addBallPrefabs;
+
+        [SerializeField] private AddCoin addCoinPrefab;
 
 		[SerializeField]
 		private BoxCollider2D leftWall;
@@ -125,6 +131,10 @@ namespace AppAdvisory.BallX
 
 		void Start () 
 		{
+            if(!PlayerPrefs.HasKey("Ball"))
+            {
+                PlayerPrefs.SetInt("Ball", 0);
+            }
 			if (brickPrefabs.Length != brickProbabilities.Length) 
 			{
 				throw new System.Exception ("Cell Prefabs and Probabilities don't have the same length !");
@@ -208,7 +218,19 @@ namespace AppAdvisory.BallX
 			currentMaxCellCount = startMinCellCount;
 			StartPlayer ();
 			NextTurn ();
-		}
+            //SetUpPlayer();
+            player.SetPlayer();
+            SetBall(PlayerPrefs.GetInt("Ball"));
+
+        }
+
+        public void SetBall(int id)
+        {
+            PlayerPrefs.SetInt("Ball", id);
+            addBallPrefab = addBallPrefabs[PlayerPrefs.GetInt("Ball")];
+            topLineParticle.startColor = lineColors[PlayerPrefs.GetInt("Ball")];
+            bottomLineParticle.startColor = lineColors[PlayerPrefs.GetInt("Ball")];
+        }
 
 		void SetUpGrid() {
 			//stepX = screenRect.width / ((numberOfColumn+2) + (numberOfColumn + 4) * distanceBetweenCellsCoeff);
@@ -438,6 +460,7 @@ namespace AppAdvisory.BallX
 
 		void SetUpPlayer()
 		{
+            player.SetPlayer();
 			player.transform.localScale *= stepX;
 			player.Speed = speed;
 			player.SpawnFrequency = spawnFrequency;
@@ -477,16 +500,16 @@ namespace AppAdvisory.BallX
 			float startOffset = stepX / 2;
 			gridContainer.position = new Vector3(screenRect.xMin + startOffset, screenRect.yMax - startOffset - topBorderHeight);
 
-			bottomLimit = new Vector3 (0, screenRect.yMin + bottomBorderHeight, 0);
+			bottomLimit = new Vector3 (0, screenRect.yMin + bottomBorderHeight + 0.6f, 0);
 
 
 			Vector2 boxWidth = new Vector2 (screenRect.width + 1f, 0.1f);
 			Vector2 boxHeight = new Vector2 (0.1f, screenRect.height + 1f);
 
-			topWall.transform.position = new Vector3(0, screenRect.yMax - topBorderHeight, 0);
+			topWall.transform.position = new Vector3(0, screenRect.yMax - topBorderHeight + 0.6f, 0);
 			topWall.size = boxWidth;
 
-			bottomWall.transform.position = bottomLimit - 0.125f * stepX * Vector3.up;
+			bottomWall.transform.position = bottomLimit - 0.250f * stepX * Vector3.up;
 			bottomWall.size = boxWidth;
 
 			leftWall.transform.position = new Vector3 (screenRect.xMin, 0, 0);
@@ -506,9 +529,10 @@ namespace AppAdvisory.BallX
 			leftWall.transform.position = new Vector3 (-background.localScale.x / 2 + startOffset, 0, 0);
 			rightWall.transform.position = new Vector3 (background.localScale.x / 2 - startOffset, 0, 0);
 
-			gridContainer.position = new Vector3(- background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight);
+            //gridContainer.position = new Vector3(- background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight);
+            gridContainer.position = new Vector3(-background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight + 0.65f);
 
-		}
+        }
 
 		/// <summary>
 		/// If using Very Simple Ads by App Advisory, show an interstitial if number of play > numberOfPlayToShowInterstitial: http://u3d.as/oWD
