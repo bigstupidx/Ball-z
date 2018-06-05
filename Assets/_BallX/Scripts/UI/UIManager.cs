@@ -20,7 +20,16 @@ namespace AppAdvisory.BallX
 {
 	public class UIManager : MonoBehaviour 
 	{
-		[SerializeField]
+        [SerializeField]
+        private Camera menuCamera;
+
+        [SerializeField]
+        private Camera gameCamera;
+
+        [SerializeField]
+        private Canvas canvas;
+
+        [SerializeField]
 		private RectTransform titlecard;
 		[SerializeField]
 		private RectTransform gameOver;
@@ -107,7 +116,10 @@ namespace AppAdvisory.BallX
 				PlayButtonClicked ();
 
 			DisplayTitlecard (false);
-		}
+            canvas.worldCamera = gameCamera;
+            menuCamera.enabled = false;
+            gameCamera.enabled = true;
+        }
 
 
 		public void OnWatchAdButton() 
@@ -138,6 +150,10 @@ namespace AppAdvisory.BallX
 
             DisplayShop(false);
             DisplayTitlecard(true);
+            canvas.worldCamera = menuCamera;
+            menuCamera.enabled = true;
+            gameCamera.enabled = false;
+
         }
 
         public void OnReplayButton() 

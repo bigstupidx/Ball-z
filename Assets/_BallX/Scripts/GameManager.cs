@@ -52,7 +52,9 @@ namespace AppAdvisory.BallX
 		private int startMinCellCount = 1;
 		private int startMaxCellCount = 2;
 
-		[SerializeField]
+
+
+        [SerializeField]
 		private Color[] cellColors;
 		[SerializeField]
 		private int colorStep = 10;
