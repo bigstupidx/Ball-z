@@ -52,6 +52,8 @@ namespace AppAdvisory.BallX
 		private int startMinCellCount = 1;
 		private int startMaxCellCount = 2;
 
+        private bool continuePlaying = true;
+
 
 
         [SerializeField]
@@ -157,8 +159,6 @@ namespace AppAdvisory.BallX
 		void SubscribeToUIManager() 
 		{
 			uiManager.PlayButtonClicked += OnPlayButtonClicked;
-			uiManager.WatchAdButtonClicked += OnWatchAdButtonClicked;
-			uiManager.RateButtonClicked += OnRateButtonClicked;
 			uiManager.MainMenuButtonClicked += OnMainMenuButtonClicked;
 			uiManager.ReplayButtonClicked += OnReplayButtonClicked;
 		}
@@ -166,32 +166,6 @@ namespace AppAdvisory.BallX
 
 		void OnPlayButtonClicked() {
 			StartGame ();
-		}
-
-		void OnWatchAdButtonClicked() {
-			#if APPADVISORY_ADS
-			AdsManager.instance.ShowRewardedVideo((bool isSuccess) => {
-				if(isSuccess)
-					Utils.AddCoins(coinsPerVideo);
-			});
-			#else
-			Debug.LogWarning("To show video ads, please have a look at Very Simple Ad on the Asset Store, or go to this link: " + VerySimpleAdsURL);
-			#endif
-		}
-
-		void OnRateButtonClicked() 
-		{
-			#if VSRATE
-			RateUsManager.ShowRateUsWindows();
-
-			#else
-			Debug.LogWarning("To rate the game, please have a look at Very Simple Rate on the Asset Store, or go to this link: " + VerySimpleRateURL);
-			#endif
-		}
-
-		void OnShopButtonClicked() 
-		{
-
 		}
 
 		void OnReplayButtonClicked()
@@ -225,7 +199,7 @@ namespace AppAdvisory.BallX
             SetBall(PlayerPrefs.GetInt("Ball"));
 
         }
-
+        //Set the selected ball from the shop and change the play area color to match with the ball
         public void SetBall(int id)
         {
             PlayerPrefs.SetInt("Ball", id);
@@ -302,7 +276,7 @@ namespace AppAdvisory.BallX
 				ballToAddCount = 0;
 				source.PlayOneShot (gameOver);
 				yield return new WaitForSeconds (0.5f);
-				GameOver ();
+                GameOver ();
 			} else 
 			{
 				yield return new WaitForSeconds (0.5f);
@@ -318,10 +292,32 @@ namespace AppAdvisory.BallX
 			}
 
 		}
+        public void RestartGame()
+        {
+            for (int i = cells.Count - 1; i > -1; i--)
+            {
+                Destroy(cells[i].gameObject);
+                cells.RemoveAt(i);
+            }
+            ballToAddCount = 0;
+            nTurn = 1;
+            currentMinCellCount = startMinCellCount;
+            currentMaxCellCount = startMinCellCount;
+            NextTurn();
+        }
 
+        public void CancelGame()
+        {
+            for (int i = cells.Count - 1; i > -1; i--)
+            {
+                Destroy(cells[i].gameObject);
+                cells.RemoveAt(i);
+            }
+            ballToAddCount = 0;
+            DisplayPlayer(false);
+        }
 		private void GameOver() 
 		{
-			ShowAds ();
 
 			for (int i = cells.Count - 1; i > -1; i--) 
 			{
@@ -384,6 +380,12 @@ namespace AppAdvisory.BallX
 			nTurn++;
 			NextTurn ();
 		}
+
+        public void ContinuePlaying()
+        {
+            OnTurnEnded();
+            player.gameObject.SetActive(true);
+        }
 
 		private void CreatePowerUp(int x , int y) {
 			float random = Random.value;
@@ -535,43 +537,6 @@ namespace AppAdvisory.BallX
             gridContainer.position = new Vector3(-background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight + 0.65f);
 
         }
-
-		/// <summary>
-		/// If using Very Simple Ads by App Advisory, show an interstitial if number of play > numberOfPlayToShowInterstitial: http://u3d.as/oWD
-		/// </summary>
-		public void ShowAds()
-		{
-			int count = PlayerPrefs.GetInt("GAMEOVER_COUNT",0);
-			count++;
-
-			#if APPADVISORY_ADS
-			if(count > numberOfPlayToShowInterstitial)
-			{
-
-				if(AdsManager.instance.IsReadyInterstitial())
-				{
-					PlayerPrefs.SetInt("GAMEOVER_COUNT",0);
-					AdsManager.instance.ShowInterstitial();
-				}
-			}
-			else
-			{
-				PlayerPrefs.SetInt("GAMEOVER_COUNT", count);
-			}
-			PlayerPrefs.Save();
-			#else
-			if(count >= numberOfPlayToShowInterstitial)
-			{
-			Debug.LogWarning("To show ads, please have a look at Very Simple Ad on the Asset Store, or go to this link: " + VerySimpleAdsURL);
-			PlayerPrefs.SetInt("GAMEOVER_COUNT",0);
-			}
-			else
-			{
-			PlayerPrefs.SetInt("GAMEOVER_COUNT", count);
-			}
-			PlayerPrefs.Save();
-			#endif
-		}
 
 	}
 

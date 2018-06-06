@@ -36,6 +36,7 @@ namespace AppAdvisory.BallX
         private List<Transform> trajectoryDots;
 		private List<Ball> balls;
 		private int stopedBallsCount = 0;
+        private bool isRestarting = false;
 
 		private float threshold = 0.1f;
 
@@ -83,7 +84,14 @@ namespace AppAdvisory.BallX
 
 		public void SetUpBalls() 
 		{
-			balls = new List<Ball> ();
+            if (balls != null)
+            {
+                foreach (Ball item in balls)
+                {
+                    Destroy(item.gameObject);
+                }
+            }
+            balls = new List<Ball> ();
 			AddBall ();
 		}
 
@@ -144,7 +152,15 @@ namespace AppAdvisory.BallX
 
 		}
 
-		public void SetUpTrajectoryDots() {
+		public void SetUpTrajectoryDots()
+        {
+            if(trajectoryDots != null)
+            {
+                foreach(Transform item in trajectoryDots)
+                {
+                    Destroy(item.gameObject);
+                }
+            }
 			trajectoryDots = new List<Transform> ();
 			for (int i = 0; i < numberOfDots; i++) {
 				GameObject dot = Instantiate (dotPrefab);
@@ -176,7 +192,6 @@ namespace AppAdvisory.BallX
 			foreach (Transform dot in trajectoryDots) {
 				dot.gameObject.SetActive (false);
 			}
-            Debug.Log("FIRE");
             if (Vector3.Angle (movement, Vector3.up) > 90 - offsetRotation)
 				return;
 
@@ -255,5 +270,49 @@ namespace AppAdvisory.BallX
 
 		}
 
-	}
+        public void RestartGame()
+        {
+            isRestarting = true;
+            DestroyBalls();
+            
+            //Invoke("AddBall", 1f);
+            
+        }
+
+        public void DestroyBalls()
+        {
+            if (balls != null)
+            {
+                foreach (Ball item in balls)
+                {
+                    //balls.Remove(item);
+                    Destroy(item.gameObject);
+                }
+            }
+            balls.Clear();
+
+            if(isRestarting)
+            {
+                AddBall();
+                //Debug.Log("Ball Count: " + balls.Count);
+                balls[0].gameObject.SetActive(true);
+                //SetUpBalls();
+                isRestarting = false;
+            }
+            
+        }
+
+        public void DestroyTrajectories()
+        {
+            if (trajectoryDots != null)
+            {
+                foreach (Transform item in trajectoryDots)
+                {
+                    Destroy(item.gameObject);
+                }
+            }
+            trajectoryDots.Clear();
+        }
+
+    }
 }
