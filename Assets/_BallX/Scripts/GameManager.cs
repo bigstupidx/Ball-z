@@ -24,9 +24,7 @@ namespace AppAdvisory.BallX
 {
 	public class GameManager : MonoBehaviour 
 	{
-		private static readonly string VerySimpleAdsURL = "http://u3d.as/oWD";
-
-		private static readonly string VerySimpleRateURL = "http://u3d.as/Dt2";
+        public static GameManager instance;
 
 		[SerializeField] private float speed = 10;
 
@@ -133,12 +131,19 @@ namespace AppAdvisory.BallX
 		private int nTurn = 0;
 		private int ballToAddCount = 0;
 
-		void Start () 
-		{
-            if(!PlayerPrefs.HasKey("Ball"))
+
+        private void Awake()
+        {
+            instance = this;
+            if (!PlayerPrefs.HasKey("Ball"))
             {
                 PlayerPrefs.SetInt("Ball", 0);
             }
+        }
+
+        void Start () 
+		{
+            
 			if (brickPrefabs.Length != brickProbabilities.Length) 
 			{
 				throw new System.Exception ("Cell Prefabs and Probabilities don't have the same length !");

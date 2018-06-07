@@ -20,6 +20,8 @@ namespace AppAdvisory.BallX
 {
     public class UIManager : MonoBehaviour
     {
+        public static UIManager instance;
+
         [SerializeField]
         private Camera menuCamera;
 
@@ -59,6 +61,9 @@ namespace AppAdvisory.BallX
         private Text hudBestScore;
         [SerializeField]
         private Text hudCoins;
+        [SerializeField]
+        private static Text shopCoins;
+        public Text shopCoinsp;
 
         public Action PlayButtonClicked;
         public Action WatchAdButtonClicked;
@@ -75,6 +80,8 @@ namespace AppAdvisory.BallX
 
         void Start()
         {
+            instance = this;
+            shopCoins = shopCoinsp;
             DisplayTitlecard(true);
             DisplayGameOver(false);
             DisplayHUD(false);
@@ -129,6 +136,7 @@ namespace AppAdvisory.BallX
         public void DisplayShop(bool isShown)
         {
             shop.gameObject.SetActive(isShown);
+            shopCoins.text = Utils.GetCoins().ToString();
         }
 
         public void SetGameOverBestScore(int score)
@@ -283,6 +291,16 @@ namespace AppAdvisory.BallX
                 continuePlayingImage.gameObject.SetActive(false);
                 gameOverMenuItems.gameObject.SetActive(true);
             }
+        }
+
+        public void SelectBall(int id)
+        {
+            Debug.Log(id);
+        }
+
+        public static void UpdateShopCoins()
+        {
+            shopCoins.text = Utils.GetCoins().ToString();
         }
     }
 }
