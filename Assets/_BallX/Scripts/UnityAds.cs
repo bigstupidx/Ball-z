@@ -11,6 +11,8 @@ namespace AppAdvisory.BallX
         public bool rewardZone;
         public bool isAdShowing = false;
 
+        private bool rewardCoins = false;
+
         void Awake()
         {
             instance = this;
@@ -28,6 +30,10 @@ namespace AppAdvisory.BallX
                 Advertisement.Initialize("1792779", false);
             }
 
+        }
+        public void RewardingCoins(bool reward)
+        {
+            rewardCoins = reward;
         }
 
         public void ShowAd(string zone = "")
@@ -62,8 +68,18 @@ namespace AppAdvisory.BallX
                     Debug.Log("Ad Finished. Rewarding player...");
                     if (rewardZone)
                     {
-                        GameManager.instance.ContinuePlaying();
-                        UIManager.instance.OnContinuePlayingButton();
+                        if (rewardCoins)
+                        {
+                            Utils.AddCoins(20);
+                            UIManager.UpdateShopCoins();
+                            AppsFlyerMMP.WatchVideo();
+                        }
+                        else
+                        {
+                            GameManager.instance.ContinuePlaying();
+                            UIManager.instance.OnContinuePlayingButton();
+                        }
+                        
                         isAdShowing = false;
                     }
 

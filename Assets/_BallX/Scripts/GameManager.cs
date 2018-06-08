@@ -139,6 +139,10 @@ namespace AppAdvisory.BallX
             {
                 PlayerPrefs.SetInt("Ball", 0);
             }
+            else
+            {
+                SetBall(PlayerPrefs.GetInt("Ball"));
+            }
         }
 
         void Start () 
@@ -158,6 +162,8 @@ namespace AppAdvisory.BallX
 			SetUpLevelBounds ();
 
 			SetUpPlayer ();
+
+            
 		}
 
 		#region UI
@@ -171,6 +177,7 @@ namespace AppAdvisory.BallX
 
 		void OnPlayButtonClicked() {
 			StartGame ();
+            
 		}
 
 		void OnReplayButtonClicked()
@@ -281,6 +288,12 @@ namespace AppAdvisory.BallX
 				ballToAddCount = 0;
 				source.PlayOneShot (gameOver);
 				yield return new WaitForSeconds (0.5f);
+                GoogleManager.ReportScore(nTurn);
+                AppsFlyerMMP.Score(nTurn);
+                if(nTurn > Utils.GetBestScore())
+                {
+                    AppsFlyerMMP.BestScore();
+                }
                 GameOver ();
 			} else 
 			{
@@ -388,6 +401,7 @@ namespace AppAdvisory.BallX
 
         public void ContinuePlaying()
         {
+            AppsFlyerMMP.ContinuePlaying();
             OnTurnEnded();
             player.gameObject.SetActive(true);
         }

@@ -7,16 +7,23 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
      
 
     <application>
 
-     
+        <receiver android:name="com.appsflyer.MultipleInstallBroadcastReceiver" android:exported="true">
+          <intent-filter>
+            <action android:name="com.android.vending.INSTALL_REFERRER" />
+          </intent-filter>
+        </receiver>
 
         <!-- The space in these forces it to be interpreted as a string vs. int -->
         <meta-data android:name="com.google.android.gms.games.APP_ID"
-            android:value="\ " />
+            android:value="\ 940244308826" />
 
         <!-- Keep track of which plugin is being used -->
         <meta-data android:name="com.google.android.gms.games.unityVersion"
@@ -25,5 +32,6 @@
         <activity android:name="com.google.games.bridge.NativeBridgeActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
     </application>
+  
 </manifest>
 

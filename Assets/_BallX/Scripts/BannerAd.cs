@@ -15,7 +15,7 @@ public class BannerAd : MonoBehaviour
     private float deltaTime = 0.0f;
     private static string outputMessage = "";
     public bool isAdFree = false;
-    string bannerID = "ca-app-pub-3940256099942544/6300978111"; //"ca-app-pub-5229788927100372/8321228797";
+    string bannerID = "ca-app-pub-5229788927100372/9398278452"; //"ca-app-pub-5229788927100372/8321228797";
 
     public static string OutputMessage
     {
@@ -24,7 +24,7 @@ public class BannerAd : MonoBehaviour
 
     void Awake()
     {
-        MobileAds.Initialize("ca-app-pub-5229788927100372~3985084888");
+        MobileAds.Initialize("ca-app-pub-5229788927100372~9506089663");
     }
     void Start()
     {

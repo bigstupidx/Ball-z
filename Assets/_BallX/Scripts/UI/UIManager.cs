@@ -190,7 +190,11 @@ namespace AppAdvisory.BallX
                 ShopButtonClicked();
 
             DisplayShop(true);
+            DisplayGameOver(false);
             DisplayTitlecard(false);
+            canvas.worldCamera = menuCamera;
+            menuCamera.enabled = true;
+            gameCamera.enabled = false;
         }
 
         public void OnRateButton()
@@ -301,6 +305,11 @@ namespace AppAdvisory.BallX
         public static void UpdateShopCoins()
         {
             shopCoins.text = Utils.GetCoins().ToString();
+        }
+
+        public void ShowLeaderboard()
+        {
+            Social.ShowLeaderboardUI();
         }
     }
 }

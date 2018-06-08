@@ -77,6 +77,7 @@ namespace AppAdvisory.BallX
                     PlayerPrefs.SetInt("Ball_" + id, 1);
                     PlayerPrefs.SetInt("Ball", id);
                     GameManager.instance.SetBall(id);
+                    AppsFlyerMMP.BallUnlocked();
                 }
                 else
                 {
