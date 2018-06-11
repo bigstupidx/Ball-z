@@ -31,12 +31,13 @@ namespace AppAdvisory.BallX
                 }
 
             }
-            else
+            if (PlayerPrefs.HasKey("Ball_" + id))
             {
                 if (PlayerPrefs.GetInt("Ball_" + id) == 1)
                 {
                     lockedImage.gameObject.SetActive(false);
                     ballParticle.gameObject.SetActive(true);
+                    Debug.Log("Ball Shop Test");
 
                 }
             }

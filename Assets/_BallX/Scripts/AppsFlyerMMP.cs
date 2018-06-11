@@ -82,5 +82,13 @@ public class AppsFlyerMMP : MonoBehaviour
         AppsFlyer.trackRichEvent("ball_unlocked", ball);
 
     }
+    public static void AdsRemoved()
+    {
+
+        Dictionary<string, string> ads = new Dictionary<string, string>();
+        ads.Add("ads_removed", "1");
+        AppsFlyer.trackRichEvent("ads_removed", ads);
+
+    }
 
 }

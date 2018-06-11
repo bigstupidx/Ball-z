@@ -264,8 +264,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   source: {fileID: 82050066159475524}
-  hitBrick: {fileID: 8300000, guid: c0e1c91552d954488929c470683bfa4f, type: 3}
-  hitPickable: {fileID: 8300000, guid: 77b7aba0f6e1f4886a73f95e438958a4, type: 3}
+  hitBrick: {fileID: 8300000, guid: 572687f444a5f3a479c3e464ee1aa796, type: 3}
+  hitPickable: {fileID: 8300000, guid: b21f4d2bf3acb064491e0dba6ca8924f, type: 3}
 --- !u!198 &198079244305590090
 ParticleSystem:
   m_ObjectHideFlags: 1

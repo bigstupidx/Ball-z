@@ -130,10 +130,12 @@ namespace AppAdvisory.BallX
 
 		private int nTurn = 0;
 		private int ballToAddCount = 0;
+        private int adCounter = 0;
 
 
         private void Awake()
         {
+            //PlayerPrefs.DeleteAll();
             instance = this;
             if (!PlayerPrefs.HasKey("Ball"))
             {
@@ -200,7 +202,12 @@ namespace AppAdvisory.BallX
 			uiManager.SetHUDBestScore (Utils.GetBestScore ());
 			uiManager.DisplayHUD (true);
 
-
+            adCounter++;
+            if(adCounter >= 5)
+            {
+                UnityAds.instance.ShowAd("rewardedVideo");
+                adCounter = 0;
+            }
 			nTurn = 1;
 			currentMinCellCount = startMinCellCount;
 			currentMaxCellCount = startMinCellCount;
@@ -318,6 +325,12 @@ namespace AppAdvisory.BallX
                 cells.RemoveAt(i);
             }
             ballToAddCount = 0;
+            adCounter++;
+            if (adCounter >= 5)
+            {
+                UnityAds.instance.ShowAd("rewardedVideo");
+                adCounter = 0;
+            }
             nTurn = 1;
             currentMinCellCount = startMinCellCount;
             currentMaxCellCount = startMinCellCount;
@@ -549,8 +562,8 @@ namespace AppAdvisory.BallX
 
 			background.transform.position = (topWall.transform.position + bottomWall.transform.position) / 2;
 
-			leftWall.transform.position = new Vector3 (-background.localScale.x / 2 + startOffset, 0, 0);
-			rightWall.transform.position = new Vector3 (background.localScale.x / 2 - startOffset, 0, 0);
+			leftWall.transform.position = new Vector3 (-background.localScale.x / 2 + startOffset - 0.1f, 0, 0);
+			rightWall.transform.position = new Vector3 (background.localScale.x / 2 - startOffset + 0.1f, 0, 0);
 
             //gridContainer.position = new Vector3(- background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight);
             gridContainer.position = new Vector3(-background.localScale.x / 2 + startOffset - 0.45f, screenRect.yMax - startOffset - topBorderHeight + 0.65f);

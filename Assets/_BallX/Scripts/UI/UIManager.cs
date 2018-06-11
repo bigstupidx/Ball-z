@@ -75,8 +75,16 @@ namespace AppAdvisory.BallX
         public Action MainMenuButtonClicked;
         public Action PauseButtonClicked;
         public Action ContinuePlayingButtonClicked;
+        public Action MusicButtonClicked;
 
+        public AudioListener audioListener;
+        public Image musicIcon;
+        public Color32 musicOnColor;
+        public Color32 musicOffColor;
         private bool isContinuePlaying = true;
+
+        public Transform removeAdLockedImage;
+        public int removeAdCost = 900;
 
         void Start()
         {
@@ -89,6 +97,11 @@ namespace AppAdvisory.BallX
             canvas.worldCamera = menuCamera;
             menuCamera.enabled = true;
             gameCamera.enabled = false;
+
+            if(PlayerPrefs.GetInt("AdsRemoved") == 1)
+            {
+                removeAdLockedImage.gameObject.SetActive(false);
+            }
         }
 
         public void DisplayTitlecard(bool isShown)
@@ -184,6 +197,24 @@ namespace AppAdvisory.BallX
                 WatchAdButtonClicked();
         }
 
+        public void OnMusicButton()
+        {
+            if (MusicButtonClicked != null)
+                MusicButtonClicked();
+
+            if(AudioListener.volume == 0)
+            {
+                AudioListener.volume = 1;
+                musicIcon.color = musicOnColor;
+            }
+            else
+            {
+                AudioListener.volume = 0;
+                musicIcon.color = musicOffColor;
+            }
+
+        }
+
         public void OnShopButton()
         {
             if (ShopButtonClicked != null)
@@ -201,6 +232,8 @@ namespace AppAdvisory.BallX
         {
             if (RateButtonClicked != null)
                 RateButtonClicked();
+
+            Application.OpenURL("https://play.google.com/store/apps/details?id=com.belizard.ballz");
         }
 
         public void OnRestartButton()
@@ -310,6 +343,22 @@ namespace AppAdvisory.BallX
         public void ShowLeaderboard()
         {
             Social.ShowLeaderboardUI();
+        }
+
+        public void RemoveAds()
+        {
+            if(!PlayerPrefs.HasKey("AdsRemoved"))
+            {
+                PlayerPrefs.SetInt("AdsRemoved", 0);
+            }
+            else if (Utils.GetCoins() >= removeAdCost && PlayerPrefs.GetInt("AdsRemoved") == 0)
+            {
+                removeAdLockedImage.gameObject.SetActive(false);
+                Utils.AddCoins(-900);
+                UpdateShopCoins();
+                PlayerPrefs.SetInt("AdsRemoved", 1);
+                AppsFlyerMMP.AdsRemoved();
+            }
         }
     }
 }

@@ -73,6 +73,7 @@ namespace AppAdvisory.BallX
                             Utils.AddCoins(20);
                             UIManager.UpdateShopCoins();
                             AppsFlyerMMP.WatchVideo();
+                            rewardCoins = false;
                         }
                         else
                         {
