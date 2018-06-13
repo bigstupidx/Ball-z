@@ -15,7 +15,7 @@ public class BannerAd : MonoBehaviour
     private float deltaTime = 0.0f;
     private static string outputMessage = "";
     public bool isAdFree = false;
-    string bannerID = "ca-app-pub-5229788927100372/9398278452"; //"ca-app-pub-5229788927100372/8321228797";
+    string bannerID = "ca-app-pub-5229788927100372/9398278452";
 
     public static string OutputMessage
     {
