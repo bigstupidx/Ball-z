@@ -26,13 +26,14 @@ namespace AppAdvisory.BallX
 		private float count =0;
 		void OnTriggerEnter2D(Collider2D other) 
 		{
-			if (other.CompareTag (Constants.BALL_TAG)) 
+            if (other.CompareTag (Constants.BALL_TAG)) 
 			{
 				if (OnCollision != null)
 					OnCollision (this);
 
 				Destroy (gameObject);
 			} else if (other.CompareTag (Constants.FLOOR_TAG)) {
+                //Destroy(gameObject);
 				gameObject.SetActive (false);
 			}
 		}
