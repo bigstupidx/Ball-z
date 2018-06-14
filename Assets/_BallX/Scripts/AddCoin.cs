@@ -30,7 +30,12 @@ namespace AppAdvisory.BallX
 
 				Destroy (gameObject);
 			}
+            else
+            {
+                gameObject.SetActive(false);
+            }
 		}
+
 			
 
 	}
